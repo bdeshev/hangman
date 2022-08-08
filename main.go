@@ -44,22 +44,20 @@ func printGameState(targetWord string, guessedLetters map[rune]bool) {
 	fmt.Println(getHangmanDrawing(1))
 }
 
-func getWordGuessingProgress(
-	targetWord string,
-	guessedLetters,
-	map[rune]bool)
-	string
- {
+func getWordGuessingProgress(targetWord string, guessedLetters map[rune]bool) string {
+
 	result := ""
 	for _, ch := range targetWord {
 		if ch == ' ' {
 			result += " "
-			} else if guessedLetters[unicode.ToLower(ch)] {
-			result += fmt.SPrintf("%c", ch)
+		} else if guessedLetters[unicode.ToLower(ch)] {
+			result += fmt.Sprintf("%c", ch)
 		} else {
 			result += " "
 		}
 		result += " "
+	}
+	return result
 }
 
 func getHangmanDrawing(hangmanState int) string {
