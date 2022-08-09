@@ -22,8 +22,8 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 	targetWord := getRandomWord()
 	guessedLetters := initializeGuessedWord(targetWord)
-
-	printGameState(targetWord, guessedLetters)
+	hangmanState := 0
+	printGameState(targetWord, guessedLetters, hangmanState)
 }
 
 func initializeGuessedWord(targetWord string) map[rune]bool {
@@ -38,10 +38,10 @@ func getRandomWord() string {
 	targetWord := dictionary[rand.Intn(len(dictionary))]
 	return targetWord
 }
-func printGameState(targetWord string, guessedLetters map[rune]bool) {
+func printGameState(targetWord string, guessedLetters map[rune]bool, hangmanState int) {
 	fmt.Println(getWordGuessingProgress(targetWord, guessedLetters))
 	fmt.Println()
-	fmt.Println(getHangmanDrawing(1))
+	fmt.Println(getHangmanDrawing(hangmanState))
 }
 
 func getWordGuessingProgress(targetWord string, guessedLetters map[rune]bool) string {
@@ -53,15 +53,16 @@ func getWordGuessingProgress(targetWord string, guessedLetters map[rune]bool) st
 		} else if guessedLetters[unicode.ToLower(ch)] {
 			result += fmt.Sprintf("%c", ch)
 		} else {
-			result += " "
+			result += "_"
 		}
+
 		result += " "
 	}
 	return result
 }
 
 func getHangmanDrawing(hangmanState int) string {
-	data, err := ioutil.ReadFile("states/hangman1")
+	data, err := ioutil.ReadFile(fmt.Sprintf("states/hangman%d", hangmanState))
 	if err != nil {
 		panic(err)
 	}
