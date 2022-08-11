@@ -32,7 +32,7 @@ func main() {
 		printGameState(targetWord, guessedLetters, hangmanState)
 		input := readInput()
 		if len(input) != 1 {
-			fmt.Println("Invalid Imput. Please use letters only...")
+			fmt.Println("Invalid Input. Please use letters only...")
 			continue
 		}
 		letter := rune(input[0])
