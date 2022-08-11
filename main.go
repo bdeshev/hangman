@@ -11,7 +11,7 @@ import (
 	"unicode"
 )
 
-var imputReader = bufio.NewReader(os.Stdin)
+var inputReader = bufio.NewReader(os.Stdin)
 
 var dictionary = []string{
 	"Zombie",
@@ -30,10 +30,16 @@ func main() {
 	hangmanState := 0
 	for {
 		printGameState(targetWord, guessedLetters, hangmanState)
-		imput := readImput()
-		if len(imput) != 1 {
+		input := readInput()
+		if len(input) != 1 {
 			fmt.Println("Invalid Imput. Please use letters only...")
 			continue
+		}
+		letter := rune(input[0])
+		if isCorrectGuess(targetWord, letter) {
+			guessedLetters[letter] = true
+		} else {
+			hangmanState++
 		}
 	}
 }
@@ -82,11 +88,15 @@ func getHangmanDrawing(hangmanState int) string {
 	return string(data)
 }
 
-func readImput() string {
+func readInput() string {
 	fmt.Print("> ")
-	imput, err := imputReader.ReadString('\n')
+	input, err := inputReader.ReadString('\n')
 	if err != nil {
 		panic(err)
 	}
-	return strings.TrimSpace(imput)
+	return strings.TrimSpace(input)
+}
+
+func isCorrectGuess(targetWord string, letter rune) bool {
+	return strings.ContainsRune(targetWord, letter)
 }
