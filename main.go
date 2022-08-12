@@ -27,8 +27,9 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 	targetWord := getRandomWord()
 	guessedLetters := initializeGuessedWord(targetWord)
+
 	hangmanState := 0
-	for {
+	for !isWordGuessed(targetWord, guessedLetters) && !isHangmanComplete(hangmanState) {
 		printGameState(targetWord, guessedLetters, hangmanState)
 		input := readInput()
 		if len(input) != 1 {
@@ -42,6 +43,15 @@ func main() {
 			hangmanState++
 		}
 	}
+	printGameState(targetWord, guessedLetters, hangmanState)
+	fmt.Print("Game Over...")
+	if isWordGuessed(targetWord, guessedLetters) {
+		fmt.Println("You win!")
+	} else if isHangmanComplete(hangmanState) {
+		fmt.Println("You lose!")
+	} else {
+		panic("??????????")
+	}
 }
 
 func initializeGuessedWord(targetWord string) map[rune]bool {
@@ -50,6 +60,18 @@ func initializeGuessedWord(targetWord string) map[rune]bool {
 	guessedLetters[unicode.ToLower(rune(targetWord[len(targetWord)-1]))] = true
 
 	return guessedLetters
+}
+
+func isWordGuessed(targetWord string, guessedLetters map[rune]bool) bool {
+	for _, ch := range targetWord {
+		if !guessedLetters[unicode.ToLower(ch)] {
+			return false
+		}
+	}
+	return true
+}
+func isHangmanComplete(hangmanState int) bool {
+	return hangmanState >= 9
 }
 
 func getRandomWord() string {
