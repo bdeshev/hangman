@@ -27,6 +27,7 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 	targetWord := getRandomWord()
 	guessedLetters := initializeGuessedWord(targetWord)
+	guessedLetters[' '] = true
 
 	hangmanState := 0
 	for !isWordGuessed(targetWord, guessedLetters) && !isHangmanComplete(hangmanState) {
